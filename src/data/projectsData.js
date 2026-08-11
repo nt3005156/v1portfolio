@@ -1,0 +1,68 @@
+export const projectsData = [
+  {
+    id: "learning-hub",
+    title: "Student Learning Hub — the one you're using",
+    category: "Education Platform",
+    desc: "I got tired of PDFs named 'final_final2.pdf' in Viber, so I built this. Searchable chapters, code you can actually copy, progress that remembers you. 800+ kids use it now, which still feels weird.",
+    longDesc: "A simple LMS for Class 11/12 CS. No heavy Moodle stuff. Just chapters, notes written like I talk, quizzes that tell you why you're wrong, and PDFs you can download before exams.",
+    tags: ["React", "Made for students", "Actually used"],
+    color: "from-violet-600 to-indigo-600",
+    accent: "#7c3aed",
+    image: "hub",
+    links: { live: "#learning", github: "#" },
+    featured: true,
+    year: "2024"
+  },
+  {
+    id: "code-visualizer",
+    title: "Algorithm Visualizer — see it, don't mug it",
+    category: "Open Source",
+    desc: "Sorting felt like magic until I animated it. Built this so my students stop memorizing steps and actually see the swap.",
+    tags: ["TypeScript", "Canvas", "Explained simply"],
+    color: "from-cyan-500 to-blue-500",
+    accent: "#06b6d4",
+    image: "algo",
+    links: { live: "#", github: "#" },
+    featured: true,
+    year: "2023"
+  },
+  {
+    id: "portfolio-engine",
+    title: "This portfolio — built like I teach",
+    category: "Frontend",
+    desc: "No template. I wanted it to feel like a journey — scroll is a walk through my teaching log. Magnetic buttons, smooth scroll, and it still loads fast on slow data.",
+    tags: ["React", "Framer Motion", "Hand-coded"],
+    color: "from-amber-500 to-orange-600",
+    accent: "#f59e0b",
+    image: "portfolio",
+    links: { live: "#", github: "#" },
+    featured: true,
+    year: "2024"
+  },
+  {
+    id: "nepal-db",
+    title: "SchoolDB — for my friend's school",
+    category: "Full Stack",
+    desc: "My friend needed attendance + fees without Excel chaos. Built it, deployed in 3 schools. It's not perfect, but it saves them 5 hours a week.",
+    tags: ["Next.js", "PostgreSQL", "Real use case"],
+    color: "from-emerald-500 to-teal-600",
+    accent: "#10b981",
+    image: "school",
+    links: { live: "#", github: "#" },
+    featured: false,
+    year: "2022"
+  },
+  {
+    id: "quiz-arena",
+    title: "Quiz Arena — my anti-cheat experiment",
+    category: "EdTech",
+    desc: "Kids were sharing answers, so I added timer + shuffling. Still hackable, but better. They actually compete now, which is fun to watch.",
+    tags: ["React", "Node.js", "Tried my best"],
+    color: "from-pink-500 to-rose-500",
+    accent: "#ec4899",
+    image: "quiz",
+    links: { live: "#", github: "#" },
+    featured: false,
+    year: "2023"
+  },
+]

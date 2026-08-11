@@ -1,0 +1,5 @@
+Contact: mailto:nitesh.thakur.edu.np@gmail.com
+Expires: 2027-08-10T00:00:00.000Z
+Acknowledgments: https://niteshthakur.com.np/#contact
+Preferred-Languages: en, ne
+Canonical: https://niteshthakur.com.np/.well-known/security.txt
