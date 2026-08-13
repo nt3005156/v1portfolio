@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Clock, BookOpen, ChevronRight, ArrowLeft, GraduationCap, Play, FileText, HelpCircle, Code2, Download, CheckCircle2, Bookmark, Timer } from 'lucide-react'
 import { useAppData } from '../context/AdminContext'
 import { useLocalStorage } from '../hooks/useLocalStorage'
+import ExamPreparation from '../components/sections/ExamPreparation'
 
 function Breadcrumb({ parts }) {
   return (
@@ -20,8 +21,8 @@ function Breadcrumb({ parts }) {
 }
 
 function getAllChaptersFromData(learningData) {
-  const chapters = []
-  (learningData.classes || []).forEach(cls => {
+  const chapters = [];
+  (learningData?.classes || []).forEach(cls => {
     (cls.subjects || []).forEach(sub => {
       (sub.chapters || []).forEach(ch => {
         chapters.push({ ...ch, classId: cls.id, className: cls.name, subjectId: sub.id, subjectName: sub.name })
@@ -48,7 +49,7 @@ export default function LearningHub() {
   const filteredChapters = useMemo(() => {
     if (!search) return allChapters
     const q = search.toLowerCase()
-    return allChapters.filter(ch => ch.title.toLowerCase().includes(q) || ch.subtitle.toLowerCase().includes(q) || (ch.tags||[]).some(t => t.toLowerCase().includes(q)))
+    return allChapters.filter(ch => (ch.title || '').toLowerCase().includes(q) || (ch.subtitle || '').toLowerCase().includes(q) || (ch.tags||[]).some(t => (t || '').toLowerCase().includes(q)))
   }, [search, allChapters])
 
   useEffect(() => {
@@ -396,6 +397,8 @@ export default function LearningHub() {
                 </motion.div>
               ))}
             </div>
+
+            <ExamPreparation />
 
             <div className="mt-14 glass rounded-[1.5rem] p-6 flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-4">

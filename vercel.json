@@ -5,7 +5,7 @@
       "destination": "https://nkt-780i.onrender.com/api/:path*"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!exam-prep/).*)",
       "destination": "/index.html"
     }
   ],
