@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ArrowUpRight, Shield } from 'lucide-react'
+import { Menu, X, ArrowUpRight } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAppData } from '../../context/AdminContext'
@@ -39,7 +39,7 @@ export default function Navbar() {
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center font-mono text-sm font-bold text-white" style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}>NKT</div>
             <div className="hidden md:block">
               <div className="font-mono text-xs font-semibold tracking-wide leading-none">{personalData.name?.toUpperCase() || 'ALEX RIVERA'}</div>
-              <div className="font-mono text-[10px] text-zinc-500 leading-none mt-1">PORTFOLIO / 2024 • ADMIN</div>
+              <div className="font-mono text-[10px] text-zinc-500 leading-none mt-1">PORTFOLIO / 2024</div>
             </div>
           </Link>
 
@@ -58,7 +58,6 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link to="/admin" className="hidden md:flex w-10 h-10 rounded-full glass items-center justify-center hover:bg-white/10" title="Admin"><Shield className="w-4 h-4" /></Link>
             <a href="#contact" onClick={(e) => { if (isHome) { e.preventDefault(); scrollTo('#contact') } }} className="hidden md:flex px-5 py-2.5 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 text-white text-sm font-medium hover:brightness-110 transition" style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}>Let's Talk</a>
             <button onClick={() => setOpen(!open)} className="md:hidden w-10 h-10 rounded-full glass flex items-center justify-center">
               {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -85,7 +84,6 @@ export default function Navbar() {
                   {l.label}
                 </motion.a>
               ))}
-              <Link to="/admin" onClick={()=>setOpen(false)} className="text-2xl font-mono py-4 text-zinc-400 flex items-center gap-2"><Shield className="w-5 h-5"/>Admin Panel</Link>
             </div>
           </motion.div>
         )}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAdmin } from '../../context/AdminContext'
 import { Shield, ArrowRight, Eye, EyeOff } from 'lucide-react'
@@ -7,21 +7,26 @@ import { Shield, ArrowRight, Eye, EyeOff } from 'lucide-react'
 export default function AdminLogin() {
   const { login, isAuthenticated } = useAdmin()
   const navigate = useNavigate()
-  const [username, setUsername] = useState('admin')
-  const [password, setPassword] = useState('admin123')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [show, setShow] = useState(false)
   const [error, setError] = useState('')
+  const [busy, setBusy] = useState(false)
 
-  if (isAuthenticated) {
-    navigate('/admin')
-    return null
-  }
+  // Redirect declaratively — calling navigate() during render is a React
+  // side-effect-in-render warning and can loop.
+  if (isAuthenticated) return <Navigate to="/admin" replace />
 
-  const handle = (e) => {
+  const handle = async (e) => {
     e.preventDefault()
-    const ok = login(username, password)
+    setError('')
+    setBusy(true)
+    // login() is async — without await this is a Promise (always truthy),
+    // which made every attempt "succeed" and never show an error.
+    const ok = await login(username, password)
+    setBusy(false)
     if (ok) navigate('/admin')
-    else setError('Invalid credentials. Try admin / admin123')
+    else setError('Invalid username or password.')
   }
 
   return (
@@ -57,13 +62,13 @@ export default function AdminLogin() {
 
             {error && <div className="font-mono text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-2">{error}</div>}
 
-            <button type="submit" className="w-full mt-2 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white text-black font-medium text-sm hover:bg-zinc-200 transition">
-              Enter Dashboard <ArrowRight className="w-4 h-4" />
+            <button type="submit" disabled={busy} className="w-full mt-2 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white text-black font-medium text-sm hover:bg-zinc-200 transition disabled:opacity-60">
+              {busy ? 'Signing in…' : 'Enter Dashboard'} <ArrowRight className="w-4 h-4" />
             </button>
 
             <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-6">
               <Link to="/" className="font-mono text-xs text-zinc-500 hover:text-white">← Back to site</Link>
-              <span className="font-mono text-[10px] text-zinc-600">Default: admin / admin123</span>
+              
             </div>
           </form>
         </div>

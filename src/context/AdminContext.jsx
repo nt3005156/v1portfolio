@@ -275,14 +275,30 @@ export function AdminProvider({ children }) {
     setIsAuthenticated(false)
     logActivity('LOGOUT', 'Admin logged out')
   }
-  const updateCreds = async (newCreds) => {
+  const updateCreds = async (newCreds, oldPassword) => {
+    // API mode: the server/database is the source of truth. If the server
+    // rejects the change we must NOT pretend it succeeded locally, otherwise
+    // the UI reports success while the real login password is unchanged.
     if (apiEnabled) {
       try {
-        await api.changePassword(creds.password, newCreds.password, newCreds.username)
-      } catch {}
+        await api.changePassword(
+          oldPassword ?? creds.password,
+          newCreds.password,
+          newCreds.username
+        )
+      } catch (err) {
+        return { ok: false, error: err?.message || 'Could not update credentials' }
+      }
+      // Never cache the admin password in localStorage when a backend exists.
+      setCreds({ username: newCreds.username, password: '' })
+      logActivity('SETTINGS', 'Admin credentials updated on server')
+      return { ok: true, message: 'Password updated. Use the new password next time you log in.' }
     }
+
+    // Offline / localStorage fallback mode (no backend configured).
     setCreds(newCreds)
-    logActivity('SETTINGS', 'Updated admin credentials')
+    logActivity('SETTINGS', 'Admin credentials updated locally')
+    return { ok: true, message: 'Credentials updated (local mode — no backend configured).' }
   }
 
   const incrementViewer = async () => {

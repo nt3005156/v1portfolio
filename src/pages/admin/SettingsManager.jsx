@@ -1,12 +1,18 @@
 import { useState } from 'react'
 import { useAdmin } from '../../context/AdminContext'
 import { Save, Download, Upload, RefreshCw, Palette, Shield } from 'lucide-react'
+import { isApiEnabled } from '../../lib/api'
 
 export default function SettingsManager() {
   const { theme, setTheme, exportAll, importAll, resetAll, creds, updateCreds, logActivity } = useAdmin()
   const [localTheme, setLocalTheme] = useState(theme)
-  const [localCreds, setLocalCreds] = useState(creds)
+  const [localCreds, setLocalCreds] = useState({ username: creds.username, password: '' })
+  const [oldPassword, setOldPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [credsMsg, setCredsMsg] = useState(null)
+  const [saving, setSaving] = useState(false)
   const [importText, setImportText] = useState('')
+  const apiEnabled = isApiEnabled()
 
   const handleThemeSave = () => {
     setTheme(localTheme)
@@ -14,10 +20,25 @@ export default function SettingsManager() {
     alert('Theme saved! Changes apply instantly across site.')
   }
 
-  const handleCredsSave = () => {
+  const handleCredsSave = async () => {
     if (!localCreds.username || !localCreds.password) return alert('Username & password required')
-    updateCreds(localCreds)
-    alert('Admin credentials updated')
+    if (localCreds.password.length < 8) return alert('Password must be at least 8 characters')
+    if (localCreds.password !== confirmPassword) return alert('New passwords do not match')
+    if (apiEnabled && !oldPassword) return alert('Enter your current password to confirm the change')
+
+    setSaving(true)
+    setCredsMsg(null)
+    const res = await updateCreds(localCreds, oldPassword)
+    setSaving(false)
+
+    if (res?.ok) {
+      setCredsMsg({ type: 'ok', text: res.message })
+      setOldPassword('')
+      setConfirmPassword('')
+      setLocalCreds({ ...localCreds, password: '' })
+    } else {
+      setCredsMsg({ type: 'err', text: res?.error || 'Update failed' })
+    }
   }
 
   const handleFileImport = (e) => {
@@ -91,9 +112,23 @@ export default function SettingsManager() {
         <div className="space-y-6">
           <div className="glass rounded-[1.5rem] p-6 space-y-4">
             <div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center"><Shield className="w-5 h-5 text-white"/></div><div><div className="font-medium text-white">Admin Credentials</div><div className="font-mono text-xs text-zinc-500">Change login for /admin</div></div></div>
-            <div><label className="font-mono text-xs text-zinc-500">Username</label><input value={localCreds.username} onChange={e=>setLocalCreds({...localCreds, username: e.target.value})} className="mt-1 w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white" /></div>
-            <div><label className="font-mono text-xs text-zinc-500">Password</label><input value={localCreds.password} onChange={e=>setLocalCreds({...localCreds, password: e.target.value})} className="mt-1 w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white" /></div>
-            <button onClick={handleCredsSave} className="w-full px-6 py-3 rounded-full bg-white text-black text-sm font-medium flex items-center justify-center gap-2"><Save className="w-4 h-4"/>Update Credentials</button>
+            <div><label className="font-mono text-xs text-zinc-500">Username</label><input autoComplete="username" value={localCreds.username} onChange={e=>setLocalCreds({...localCreds, username: e.target.value})} className="mt-1 w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white" /></div>
+
+            {apiEnabled && (
+              <div><label className="font-mono text-xs text-zinc-500">Current password</label><input type="password" autoComplete="current-password" value={oldPassword} onChange={e=>setOldPassword(e.target.value)} placeholder="Required to confirm" className="mt-1 w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white" /></div>
+            )}
+
+            <div><label className="font-mono text-xs text-zinc-500">New password</label><input type="password" autoComplete="new-password" value={localCreds.password} onChange={e=>setLocalCreds({...localCreds, password: e.target.value})} placeholder="Min 8 characters" className="mt-1 w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white" /></div>
+            <div><label className="font-mono text-xs text-zinc-500">Confirm new password</label><input type="password" autoComplete="new-password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)} className="mt-1 w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white" /></div>
+
+            {credsMsg && (
+              <div className={`font-mono text-xs rounded-xl px-4 py-2.5 border ${credsMsg.type === 'ok' ? 'text-emerald-300 bg-emerald-500/10 border-emerald-500/20' : 'text-red-300 bg-red-500/10 border-red-500/20'}`}>{credsMsg.text}</div>
+            )}
+            {!apiEnabled && (
+              <div className="font-mono text-[11px] text-amber-300/80 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-2.5">Local mode — no backend configured. Credentials are stored in this browser only.</div>
+            )}
+
+            <button onClick={handleCredsSave} disabled={saving} className="w-full px-6 py-3 rounded-full bg-white text-black text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-60"><Save className="w-4 h-4"/>{saving ? 'Updating…' : 'Update Credentials'}</button>
           </div>
 
           <div className="glass rounded-[1.5rem] p-6 space-y-4">
