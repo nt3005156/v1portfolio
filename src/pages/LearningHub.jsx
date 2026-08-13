@@ -403,7 +403,7 @@ export default function LearningHub() {
             <div className="mt-14 glass rounded-[1.5rem] p-6 flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center"><BookOpen className="w-6 h-6 text-white" /></div>
-                <div><div className="font-medium text-white">Easy to expand</div><div className="font-mono text-xs text-zinc-500 mt-1">Manage everything from <code className="px-1.5 py-0.5 bg-white/10 rounded">/admin</code> — no code needed.</div></div>
+                <div><div className="font-medium text-white">Easy to expand</div><div className="font-mono text-xs text-zinc-500 mt-1"> GeT Back<code className="px-1.5 py-0.5 bg-white/10 rounded"></code></div></div>
               </div>
               <Link to="/" className="px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-zinc-200 transition">Back to Portfolio</Link>
             </div>

@@ -49,7 +49,7 @@ export default function Sponsors() {
           ))}
         </div>
 
-        <div className="mt-6 font-mono text-[11px] text-zinc-600 text-center">This section is fully controlled from Admin → Ads / Sponsors. Add, edit, delete as you like.</div>
+        <div className="mt-6 font-mono text-[11px] text-zinc-600 text-center"></div>
       </div>
     </section>
   )

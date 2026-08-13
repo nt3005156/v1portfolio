@@ -39,7 +39,7 @@ export default function Navbar() {
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center font-mono text-sm font-bold text-white" style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}>NKT</div>
             <div className="hidden md:block">
               <div className="font-mono text-xs font-semibold tracking-wide leading-none">{personalData.name?.toUpperCase() || 'ALEX RIVERA'}</div>
-              <div className="font-mono text-[10px] text-zinc-500 leading-none mt-1">PORTFOLIO / 2024</div>
+              <div className="font-mono text-[10px] text-zinc-500 leading-none mt-1">PORTFOLIO / 2026</div>
             </div>
           </Link>
 

@@ -28,7 +28,7 @@ export default function Footer() {
               <div className="font-mono text-xs text-zinc-500 mt-1">— John Johnson • I try to keep it simple, even when I mess up</div>
             </div>
             <div className="flex justify-between items-center font-mono text-xs text-zinc-600">
-              <span>© {new Date().getFullYear()} {personalData.name}. Made by hand, not AI.</span>
+              <span>© {new Date().getFullYear()} {personalData.name}. </span>
               <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />Live • {viewerCount}</span>
             </div>
           </div>
